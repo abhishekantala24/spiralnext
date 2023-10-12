@@ -1,0 +1,7 @@
+.MuiDataGrid-columnHeaders {
+    background-color: #ff000026;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked, .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.MuiCheckbox-indeterminate {
+    color: rgb(5, 119, 119) !important;
+}
