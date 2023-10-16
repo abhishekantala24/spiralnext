@@ -5,7 +5,6 @@ import { LoginResponseModel } from "@/types/ResponseTypes"
 import { createAccountAction, loginUserByEmailAction, logoutAction } from "./middleware"
 
 const INITIAL_STATE: LoginResponseModel = {
-  token: getUser() || undefined,
   response: 0,
   responsemassage: "",
   userDetails: null,
@@ -19,7 +18,6 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(logoutAction.fulfilled, (state) => ({
       ...state,
-      token: undefined,
       userDetails: undefined,
     }))
     builder.addCase(loginUserByEmailAction.fulfilled, (state, { payload }) => ({
@@ -30,7 +28,6 @@ const authSlice = createSlice({
       ...state,
       account: payload
     }))
-
   },
 })
 

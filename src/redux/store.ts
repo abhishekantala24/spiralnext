@@ -46,7 +46,6 @@ export const store: AppStore = configureStore({
     }).concat([
       createStateSyncMiddleware({
         channel: "Talentrackr",
-        broadcastChannelOption: { type: "localstorage" },
         blacklist: [PERSIST, PURGE, REHYDRATE]
       })
     ])

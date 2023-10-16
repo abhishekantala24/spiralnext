@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation'
 import Logo from "@/assets/img/final-logo.png"
 import { logoutAction } from '@/redux/auth/middleware';
 import Image from 'next/image';
+import Cookies from 'js-cookie';
 import Link from 'next/link';
 import { authSelector } from '@/redux/auth/authSlice';
 
@@ -24,7 +25,7 @@ function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const dispatch = useAppDispatch()
-    let selector = useAppSelector(authSelector).userDetails
+    const selector = Cookies.get('user');
     const router = useRouter();
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
