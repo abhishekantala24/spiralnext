@@ -49,7 +49,6 @@ export const createAccountAction = createAsyncThunk<
       const auth = getAuth(firebase);
       const response = await createUserWithEmailAndPassword(auth, loginRequest.email, loginRequest.password)
       if (response.user.email) {
-        Cookies.set('user', response.user.email);
         return response.user
       }
       return rejectWithValue(response)
