@@ -116,7 +116,7 @@ const Login: React.FC = (): JSX.Element => {
 
                         >
                           <p className="small">
-                            <span className="text-success">
+                            <span className="text-success" style={{ cursor: 'pointer' }} onClick={() => router.push('/forgot-password')}>
                               Forgot password?
                             </span>
                           </p>

@@ -1,6 +1,4 @@
 'use client'
-'use client'
-import { AxiosBasicCredentials } from "axios";
 import React, { useState } from "react";
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import * as yup from "yup"
@@ -10,12 +8,9 @@ import { useRouter } from 'next/navigation'
 import Logo from "@/assets/img/cropped-final-logo-footer.png"
 
 import TextInput from "@/component/TextInput/TextInput";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import Image from "next/image";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { createAccountAction } from "@/redux/auth/middleware";
-import { authSelector } from "@/redux/auth/authSlice";
-import { ToastOptions, toast } from "react-toastify";
 
 
 const initialFormData: any = {
@@ -81,19 +76,19 @@ const SignInPage = () => {
                       />
                       <h2 className="ml-2" style={{ marginLeft: '10px' }}>Spiral Technolabs</h2>
                     </div>
-                    <p>Please enter your login and password!</p>
+                    <p>Please enter your email or password!</p>
                     <div className="mb-3">
                       <Form noValidate onSubmit={handleSubmit} >
                         <TextInput
                           controlId="usernameGroup"
-                          label={"username"}
+                          label={"Username"}
                           value={values?.username}
                           onChange={handleChange}
                           onBlur={handleBlur}
                           touched={touched?.username}
                           errors={errors?.username}
                           formGroupClassName="mb-4 pt-3"
-                          placeholder="Enter username"
+                          placeholder="Enter Username"
                           type="text"
                           name="username"
                           maxLength={50}
@@ -101,7 +96,7 @@ const SignInPage = () => {
                         />
                         <TextInput
                           controlId="emailGroup"
-                          label={"email"}
+                          label={"Email"}
                           value={values?.email}
                           onChange={handleChange}
                           onBlur={handleBlur}
@@ -145,7 +140,7 @@ const SignInPage = () => {
 
                         >
                           <p className="small">
-                            <span className="text-success">
+                            <span className="text-success" style={{ cursor: 'pointer' }} onClick={() => router.push('/forgot-password')}>
                               Forgot password?
                             </span>
                           </p>
@@ -159,7 +154,7 @@ const SignInPage = () => {
                       <div className="mt-3">
                         <p className="mb-0  text-center">
                           Already Registered User? Click here to{" "}
-                          <span className="text-success fw-bold" onClick={() => router.push('/login')}>
+                          <span style={{ cursor: 'pointer' }} className="text-success fw-bold" onClick={() => router.push('/login')}>
                             login
                           </span>
                         </p>

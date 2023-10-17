@@ -26,3 +26,8 @@
     --bs-spinner-width: 3rem;
     --bs-spinner-height: 3rem;
 }
+
+.modal-dialog .modal-content {
+    width: 25%;
+    margin: 0 auto;
+}
