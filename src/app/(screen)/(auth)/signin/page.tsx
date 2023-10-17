@@ -21,6 +21,7 @@ import { ToastOptions, toast } from "react-toastify";
 const initialFormData: any = {
   email: "",
   password: "",
+  username: "",
 }
 
 const SignInPage = () => {
@@ -36,6 +37,9 @@ const SignInPage = () => {
       email: yup
         .string()
         .required("Please Enter email"),
+      username: yup
+        .string()
+        .required("Please Enter username"),
     })
 
   const { handleChange, handleSubmit, handleBlur, values, touched, errors } = useFormik({
@@ -45,7 +49,7 @@ const SignInPage = () => {
       dispatch(createAccountAction(val))
         .then((res) => {
           if (res?.payload?.accessToken) {
-            router.push('/create-account')
+            router.push('/login')
           }
         })
         .catch((res) => {
@@ -80,7 +84,21 @@ const SignInPage = () => {
                     <p>Please enter your login and password!</p>
                     <div className="mb-3">
                       <Form noValidate onSubmit={handleSubmit} >
-
+                        <TextInput
+                          controlId="usernameGroup"
+                          label={"username"}
+                          value={values?.username}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched?.username}
+                          errors={errors?.username}
+                          formGroupClassName="mb-4 pt-3"
+                          placeholder="Enter username"
+                          type="text"
+                          name="username"
+                          maxLength={50}
+                          restProps={{ "aria-describedby": "User Name" }}
+                        />
                         <TextInput
                           controlId="emailGroup"
                           label={"email"}
@@ -89,13 +107,14 @@ const SignInPage = () => {
                           onBlur={handleBlur}
                           touched={touched?.email}
                           errors={errors?.email}
-                          formGroupClassName="mb-4 pt-3"
+                          formGroupClassName="mb-4"
                           placeholder="Enter email"
                           type="text"
                           name="email"
                           maxLength={50}
                           restProps={{ "aria-describedby": "User Name" }}
                         />
+
                         <TextInput
                           controlId="passwordGroup"
                           label={"Password"}

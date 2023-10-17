@@ -3,6 +3,7 @@ import './index.css'
 import '../assets/Layout.css'
 import ResponsiveAppBar from '@/component/Header/Header'
 import ToastProvider from '@/component/Loader'
+import Loader from '@/component/Loader/loader'
 
 export const metadata = {
   title: 'Spiral Demo',
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className='cls-background'>
         <Providers>
           <ToastProvider>
+            <Loader />
             <ResponsiveAppBar />
             {children}
           </ToastProvider>

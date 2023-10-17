@@ -43,12 +43,7 @@ export const store: AppStore = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
       immutableCheck: false
-    }).concat([
-      createStateSyncMiddleware({
-        channel: "Talentrackr",
-        blacklist: [PERSIST, PURGE, REHYDRATE]
-      })
-    ])
+    })
 })
 
 export const persistor: Persistor = persistStore(store)

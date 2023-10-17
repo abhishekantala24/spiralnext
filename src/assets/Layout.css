@@ -5,4 +5,24 @@
 
 }
 
-.Blog_background__Xmbdo {}
+.modal-dialog {
+    width: 100%;
+    margin: 0 auto;
+    background: #00000054;
+    height: 100%;
+    text-align: center;
+    max-width: 100%;
+}
+
+.modal-dialog .cls-spinner.spinner-border {
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+}
+
+.modal-dialog .spinner-border {
+    --bs-spinner-width: 3rem;
+    --bs-spinner-height: 3rem;
+}

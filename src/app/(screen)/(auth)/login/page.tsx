@@ -11,7 +11,7 @@ import Logo from "@/assets/img/cropped-final-logo-footer.png"
 import TextInput from "@/component/TextInput/TextInput";
 import { useAppDispatch } from "@/redux/hooks";
 import { loginUserByEmailAction } from "@/redux/auth/middleware";
-import Image from "next/image"; 
+import Image from "next/image";
 
 const initialFormData: AxiosBasicCredentials = {
   username: "",
@@ -130,7 +130,7 @@ const Login: React.FC = (): JSX.Element => {
                       <div className="mt-3">
                         <p className="mb-0  text-center">
                           Don't have an account?{" "}
-                          <span className="text-success fw-bold" onClick={() => router.push('/signin')}>
+                          <span style={{ cursor: 'pointer' }} className="text-success fw-bold" onClick={() => router.push('/signin')}>
                             Sign Up
                           </span>
                         </p>

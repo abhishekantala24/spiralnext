@@ -25,6 +25,7 @@ function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const dispatch = useAppDispatch()
+    const appSelector = useAppSelector(authSelector).userDetails?.uid
     const selector = Cookies.get('user');
     const router = useRouter();
 
@@ -46,7 +47,7 @@ function ResponsiveAppBar() {
 
     return (
         <>
-            {selector ?
+            {selector || appSelector ?
                 <AppBar position="static" style={{ backgroundColor: '#88c4ff80' }}>
                     <Container maxWidth="xl">
                         <Toolbar disableGutters>
