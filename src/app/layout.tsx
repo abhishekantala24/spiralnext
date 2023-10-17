@@ -1,4 +1,5 @@
 import { Providers } from '@/redux/provider'
+import { Analytics } from '@vercel/analytics/react';
 import './index.css'
 import '../assets/Layout.css'
 import ResponsiveAppBar from '@/component/Header/Header'
@@ -24,6 +25,7 @@ export default function RootLayout({
             <Loader />
             <ResponsiveAppBar />
             {children}
+            <Analytics />
           </ToastProvider>
         </Providers>
       </body>

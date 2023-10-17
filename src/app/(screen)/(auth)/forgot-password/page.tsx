@@ -50,11 +50,8 @@ const Login: React.FC = (): JSX.Element => {
                         message: "Try Again."
                     })
                 });
-
         },
     })
-    console.log(isModal.message);
-
 
     return (
         <>
@@ -96,14 +93,14 @@ const Login: React.FC = (): JSX.Element => {
                                                 />
                                                 <div className="d-grid">
                                                     <Button type="submit" className="text-dark font-weight-bold" style={{ backgroundColor: 'rgba(136, 196, 255, 0.5)', borderColor: 'black' }}>
-                                                        Login
+                                                        Submit
                                                     </Button>
                                                 </div>
                                             </Form>
                                             <div className="mt-3">
                                                 <p className="mb-0  text-center">
                                                     Remember ?{" "}
-                                                    <span style={{ cursor: 'pointer' }} className="text-success fw-bold" onClick={() => router.push('/signin')}>
+                                                    <span style={{ cursor: 'pointer' }} className="text-success fw-bold" onClick={() => router.push('/login')}>
                                                         Login
                                                     </span>
                                                 </p>
@@ -117,7 +114,6 @@ const Login: React.FC = (): JSX.Element => {
                     <Modal
                         show={isModal.isOpen}
                         centered
-                        className="bhai bhai"
                     >
                         <Modal.Body>
                             <div>

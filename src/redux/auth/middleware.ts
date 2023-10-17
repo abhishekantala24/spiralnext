@@ -35,12 +35,15 @@ export const loginUserByEmailAction = createAsyncThunk<
       if (response.user.email) {
         Cookies.set('user', response.user.email);
         return response.user
-      }
+      }      
       return rejectWithValue(response)
     } catch (error: any) {
-      dispatch(hideLoader())
+      dispatch(hideLoader())      
       if (error.code === "auth/invalid-email") {
         toast.error("Invalid Email", toastConfig)
+      }
+      if (error.code === "auth/invalid-login-credentials") {
+        toast.error("Invalid User or Password", toastConfig)
       }
 
       return rejectWithValue(error as Error)
