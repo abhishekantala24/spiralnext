@@ -38,7 +38,7 @@ export const loginUserByEmailAction = createAsyncThunk<
       }
       return rejectWithValue(response)
     } catch (error: unknown) {
-
+      dispatch(hideLoader())
       return rejectWithValue(error as Error)
     }
   }
