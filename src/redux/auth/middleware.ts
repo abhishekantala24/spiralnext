@@ -37,8 +37,12 @@ export const loginUserByEmailAction = createAsyncThunk<
         return response.user
       }
       return rejectWithValue(response)
-    } catch (error: unknown) {
+    } catch (error: any) {
       dispatch(hideLoader())
+      if (error.code === "auth/invalid-email") {
+        toast.error("Invalid Email", toastConfig)
+      }
+
       return rejectWithValue(error as Error)
     }
   }
