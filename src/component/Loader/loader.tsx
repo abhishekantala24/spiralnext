@@ -10,7 +10,6 @@ const Loader = () => {
     useEffect(() => {
         setLoader(selector)
     }, [selector])
-    console.log(selector);
     
     if (loader) {
         return (

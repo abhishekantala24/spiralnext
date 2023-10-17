@@ -127,7 +127,7 @@ const EmployeePage = () => {
             age: data.age,
             location: data.location,
             role: data.role,
-            addedby: usersData?.email
+            addedby: usersData?.displayName
         }).then(() => {
             reset()
         })
@@ -136,7 +136,7 @@ const EmployeePage = () => {
     return (
         <div>
             <div className='d-flex justify-content-center pt-3'>
-                <h1>Hey ! {usersData?.displayName}</h1>
+                <h3>Hey ! {usersData?.displayName}</h3>
             </div>
             <div className='justify-content-center pt-3'>
                 <Form className='m-5' noValidate
@@ -181,32 +181,6 @@ const EmployeePage = () => {
                             />
                         </Col>
                         <Col>
-                            {/* <Form.Group>
-                                <h3>state</h3>
-                                <Form.Select name="selectState" className="form-select form-control">
-                                    <option value="">Select State</option>
-                                    {stateData &&
-                                        stateData?.length > 0 &&
-                                        stateData?.map((item: CountrySubdivisionReferenceItem) => {
-                                            const { CountrySubdivisionID, Abbreviation, Name } = item
-                                            return (
-                                                <option key={CountrySubdivisionID} value={Abbreviation}>
-                                                    {Name}
-                                                </option>
-                                            )
-                                        })}
-                                </Form.Select>
-                            </Form.Group> */}
-                            {/* <input
-                                id="terms"
-                                aria-describedby="terms"
-                                type="checkbox"
-                                className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                                {...register("terms", {
-                                    required: "Please Select Terms & Conditions",
-                                })}
-                            /> */}
-
                             <Form.Select placeholder="Role"
 
                                 {...register("role", {
@@ -218,6 +192,8 @@ const EmployeePage = () => {
                                 <option value="Designer">Designer</option>
                                 <option value="Angular Developer">Angular Developer</option>
                                 <option value="Next js Developer">Next js Developer</option>
+                                {/* <option value="HR">HR</option>
+                                <option value="Office Admin">Office Admin</option> */}
                             </Form.Select>
                             <ErrorMessage
                                 className="text-danger font-semibold"
@@ -257,7 +233,7 @@ const EmployeePage = () => {
                 </Form>
             </div>
             <div className='m-5'>
-                <Box sx={{ height: 400, width: '100%' }}>
+                <Box sx={{ height: 500, width: '100%' }}>
                     <DataGrid
                         rows={entriesData ? entriesData : []}
                         columns={columns}
@@ -265,7 +241,7 @@ const EmployeePage = () => {
                         initialState={{
                             pagination: {
                                 paginationModel: {
-                                    pageSize: 5,
+                                    pageSize: 20,
                                 },
                             },
                         }}
