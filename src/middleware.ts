@@ -14,7 +14,8 @@ export async function middleware(request: NextRequest) {
 
     const AuthNavigators = [
         "/login",
-        "/signin"
+        "/signin",
+        "/forgot-password"
     ];
 
     if (selector) {
@@ -34,7 +35,8 @@ export async function middleware(request: NextRequest) {
         if (
             AuthNavigators.includes(path) &&
             path !== "/login" &&
-            path !== "/signin"
+            path !== "/signin" &&
+            path !== "/forgot-password"
         ) {
             return NextResponse.redirect(new URL(path, request.url));
         }

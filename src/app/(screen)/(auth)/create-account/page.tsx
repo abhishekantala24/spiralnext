@@ -86,7 +86,6 @@ const CreateAccount: React.FC = (): JSX.Element => {
                                         <div className="d-flex align-items-center">
                                             <Image
                                                 className="mb-2"
-
                                                 src={Logo}
                                                 width={100}
                                                 height={100}
@@ -125,7 +124,6 @@ const CreateAccount: React.FC = (): JSX.Element => {
                                                     type="text"
                                                     name="role"
                                                     restProps={{ "aria-describedby": "role field" }}
-
                                                 />
                                                 <TextInput
                                                     controlId="phoneGroup"
