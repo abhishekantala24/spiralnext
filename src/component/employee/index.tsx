@@ -70,12 +70,11 @@ const columns: GridColDef[] = [
 ];
 
 
-const EmployeePage = () => { 
+const EmployeePage = () => {
     const [entriesData, setEntriesData] = useState<any[]>()
     const usersData = useAppSelector(authSelector).userDetails
-    console.log(usersData);
-    
     const dispatch = useAppDispatch()
+
     const storeUserData = async (userData: any) => {
         const entriesCollectionRef = collection(db, 'entry');
         dispatch(showLoader({ loading: true, message: 'empty' }))
@@ -137,7 +136,7 @@ const EmployeePage = () => {
     return (
         <div>
             <div className='d-flex justify-content-center pt-3'>
-                {/* <h1>Hey ! {userprofile?.firstName}{" "}{userprofile?.lastName}</h1> */}
+                <h1>Hey ! {usersData?.displayName}</h1>
             </div>
             <div className='justify-content-center pt-3'>
                 <Form className='m-5' noValidate
