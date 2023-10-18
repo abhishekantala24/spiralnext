@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../store"
-import { getUser } from "@/service/token"
 import { LoginResponseModel } from "@/types/ResponseTypes"
 import { createAccountAction, loginUserByEmailAction, logoutAction } from "./middleware"
 

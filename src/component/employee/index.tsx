@@ -5,15 +5,18 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
+import { BiSolidMessageSquareEdit } from 'react-icons/bi'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { authSelector } from '@/redux/auth/authSlice';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import '../../assets/page.css'
-import { collection, addDoc, doc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, doc, getDoc, getDocs, getFirestore, deleteDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { SetStateAction, useEffect, useState } from 'react';
 import { hideLoader, showLoader } from '@/redux/lem/lemSlice';
+import { toast } from 'react-toastify';
+import { toastConfig } from '@/redux/lem/types';
 
 interface IFormInputs {
     fname: string;
@@ -23,55 +26,11 @@ interface IFormInputs {
     age: number;
 }
 
-const columns: GridColDef[] = [
-    {
-        field: 'data.firstName',
-        headerName: 'First name',
-        width: 150,
-        editable: false,
-        valueGetter: (params) => params.row.data.firstName,
-    },
-    {
-        field: 'lastName',
-        headerName: 'Last name',
-        width: 150,
-        editable: false,
-        valueGetter: (params) => params.row.data.lastName,
-    },
-    {
-        field: 'location',
-        headerName: 'Location',
-        width: 200,
-        editable: false,
-        valueGetter: (params) => params.row.data.location,
-    },
-    {
-        field: 'role',
-        headerName: 'Role',
-        width: 200,
-        editable: false,
-        valueGetter: (params) => params.row.data.role,
-    },
-    {
-        field: 'age',
-        headerName: 'Age',
-        width: 110,
-        editable: false,
-        valueGetter: (params) => params.row.data.age,
-    },
-    {
-        field: 'addedby',
-        headerName: 'Added By',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 200,
-        valueGetter: (params: GridValueGetterParams) => params.row.data.addedby,
-    },
-];
-
-
 const EmployeePage = () => {
     const [entriesData, setEntriesData] = useState<any[]>()
+    const [selectedRows, setSelectedRows] = useState<any[]>([]);
+    const [selectRowData, setselectRowData] = useState();
+
     const usersData = useAppSelector(authSelector).userDetails
     const dispatch = useAppDispatch()
 
@@ -113,12 +72,37 @@ const EmployeePage = () => {
         formState: { errors },
         handleSubmit,
         reset,
-    } = useForm<IFormInputs>();
+    } = useForm<IFormInputs>({
+        defaultValues: {
+            age: 23,
+            fname: "",
+            lname: "",
+            location: "",
+            role: ""
+        }
+    });
+
+    const handleDeleteClick = async () => {
+        const firestore = getFirestore();
+        if (selectedRows.length) {
+            for (const docId of selectedRows) {
+                try {
+                    await deleteDoc(doc(firestore, 'entry', docId));
+                    toast.success("Employee Delete Successfully", toastConfig)
+                    getData()
+                } catch (error) {
+                    getData()
+                    console.error(`Error deleting document with ID ${docId}: ${error}`);
+                }
+            }
+        } else {
+            toast.error("Please Select Employee", toastConfig)
+        }
+    };
 
     useEffect(() => {
         getData()
     }, [])
-
 
     const onSubmit = (data: IFormInputs) => {
         storeUserData({
@@ -132,6 +116,78 @@ const EmployeePage = () => {
             reset()
         })
     };
+
+    const columns: GridColDef[] = [
+        {
+            field: 'data.firstName',
+            headerName: 'First name',
+            width: 150,
+            editable: false,
+            valueGetter: (params) => params.row.data.firstName,
+        },
+        {
+            field: 'lastName',
+            headerName: 'Last name',
+            width: 150,
+            editable: false,
+            valueGetter: (params) => params.row.data.lastName,
+        },
+        {
+            field: 'location',
+            headerName: 'Location',
+            width: 200,
+            editable: false,
+            valueGetter: (params) => params.row.data.location,
+        },
+        {
+            field: 'role',
+            headerName: 'Role',
+            width: 200,
+            editable: false,
+            valueGetter: (params) => params.row.data.role,
+        },
+        {
+            field: 'age',
+            headerName: 'Age',
+            width: 110,
+            editable: false,
+            valueGetter: (params) => params.row.data.age,
+        },
+        {
+            field: 'addedby',
+            headerName: 'Added By',
+            description: 'This column has a value getter and is not sortable.',
+            sortable: false,
+            width: 200,
+            valueGetter: (params: GridValueGetterParams) => params.row.data.addedby,
+        },
+        {
+            field: 'actions',
+            headerName: 'Actions',
+            sortable: false,
+            width: 200,
+            cellClassName: 'center-cell',
+            renderHeader: () => {
+                return (
+                    <div className='text-end'>
+                        <Button type='button'
+                            className='text-dark'
+                            style={{ backgroundColor: 'rgb(241 171 171)', borderColor: 'black' }}
+                        >
+                            Delete Employee
+                        </Button>
+                    </div>
+                );
+            },
+            renderCell: (params: any) => {
+                return (
+                    <div style={{ fontSize: '30px' }} onClick={() => console.log(params)}>
+                        <BiSolidMessageSquareEdit />
+                    </div>
+                )
+            }
+        },
+    ];
 
     return (
         <div>
@@ -233,11 +289,20 @@ const EmployeePage = () => {
                 </Form>
             </div>
             <div className='m-5'>
+                <div className='text-end'>
+                    <Button type='button'
+                        className='text-dark mb-3'
+                        style={{ backgroundColor: 'rgb(241 171 171)', borderColor: 'black' }}
+                        onClick={handleDeleteClick}>
+                        Delete Employee
+                    </Button>
+                </div>
                 <Box sx={{ height: 500, width: '100%' }}>
                     <DataGrid
                         rows={entriesData ? entriesData : []}
                         columns={columns}
                         key='id'
+                        onRowSelectionModelChange={(item: any) => setSelectedRows(item)}
                         initialState={{
                             pagination: {
                                 paginationModel: {
