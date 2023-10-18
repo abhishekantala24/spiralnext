@@ -5,6 +5,8 @@ import { authSelector } from '@/redux/auth/authSlice';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { hideLoader, showLoader } from '@/redux/lem/lemSlice';
+import { toast } from 'react-toastify';
+import { toastConfig } from '@/redux/lem/types';
 
 const HomeScreen = () => {
   const [entriesData, setEntriesData] = useState<any[]>()
@@ -27,7 +29,7 @@ const HomeScreen = () => {
         setEntriesData(entriesArray)
       })
       .catch((error) => {
-        console.error('Error getting documents: ', error);
+        toast.error('Error getting documents: ', toastConfig);
       });
     dispatch(hideLoader())
   }

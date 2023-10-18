@@ -11,7 +11,7 @@ import { authSelector } from '@/redux/auth/authSlice';
 import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import '../../assets/page.css'
-import { collection, addDoc, doc, getDoc, getDocs, getFirestore, deleteDoc } from 'firebase/firestore';
+import { collection, addDoc, doc, getDoc, getDocs, getFirestore, deleteDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
 import { SetStateAction, useEffect, useState } from 'react';
 import { hideLoader, showLoader } from '@/redux/lem/lemSlice';
@@ -19,8 +19,8 @@ import { toast } from 'react-toastify';
 import { toastConfig } from '@/redux/lem/types';
 
 interface IFormInputs {
-    fname: string;
-    lname: string;
+    firstName: string;
+    lastName: string;
     location: string;
     role: string;
     age: number;
@@ -29,7 +29,8 @@ interface IFormInputs {
 const EmployeePage = () => {
     const [entriesData, setEntriesData] = useState<any[]>()
     const [selectedRows, setSelectedRows] = useState<any[]>([]);
-    const [selectRowData, setselectRowData] = useState();
+    const [selectRowData, setselectRowData] = useState<any>();
+    const [selectEditRowId, setselectEditRowId] = useState<any>();
 
     const usersData = useAppSelector(authSelector).userDetails
     const dispatch = useAppDispatch()
@@ -37,13 +38,30 @@ const EmployeePage = () => {
     const storeUserData = async (userData: any) => {
         const entriesCollectionRef = collection(db, 'entry');
         dispatch(showLoader({ loading: true, message: 'empty' }))
-        await addDoc(entriesCollectionRef, userData)
-            .then(() => {
-                getData()
-            })
-            .catch(() => {
-                getData()
-            })
+        if (selectEditRowId) {
+            // make logic for edit
+            const docRef = doc(entriesCollectionRef, selectEditRowId);
+            try {
+                // Update the existing document with the edited userData
+                await setDoc(docRef, userData);
+                toast.success("Employee Details updated successfully", toastConfig)
+                setselectEditRowId()
+                getData();
+            } catch (error) {
+                toast.error("Error updating Employee Details", toastConfig)
+                setselectEditRowId()
+                getData();
+            }
+
+        } else {
+            await addDoc(entriesCollectionRef, userData)
+                .then(() => {
+                    getData()
+                })
+                .catch(() => {
+                    getData()
+                })
+        }
     };
 
     const getData = () => {
@@ -62,7 +80,7 @@ const EmployeePage = () => {
                 setEntriesData(entriesArray)
             })
             .catch((error) => {
-                console.error('Error getting documents: ', error);
+                toast.error('Error getting documents', toastConfig);
             });
         dispatch(hideLoader())
     }
@@ -72,15 +90,17 @@ const EmployeePage = () => {
         formState: { errors },
         handleSubmit,
         reset,
-    } = useForm<IFormInputs>({
-        defaultValues: {
-            age: 23,
-            fname: "",
-            lname: "",
-            location: "",
-            role: ""
+        setValue,
+    } = useForm<IFormInputs>();
+
+    useEffect(() => {
+        if (selectRowData) {
+            Object.keys(selectRowData).forEach((key: any) => {
+                setValue(key, selectRowData[key]);
+            });
         }
-    });
+    }, [selectRowData, setValue]);
+
 
     const handleDeleteClick = async () => {
         const firestore = getFirestore();
@@ -92,7 +112,7 @@ const EmployeePage = () => {
                     getData()
                 } catch (error) {
                     getData()
-                    console.error(`Error deleting document with ID ${docId}: ${error}`);
+                    toast.error(`Error deleting Employee`, toastConfig);
                 }
             }
         } else {
@@ -106,8 +126,8 @@ const EmployeePage = () => {
 
     const onSubmit = (data: IFormInputs) => {
         storeUserData({
-            firstName: data.fname,
-            lastName: data.lname,
+            firstName: data.firstName,
+            lastName: data.lastName,
             age: data.age,
             location: data.location,
             role: data.role,
@@ -167,21 +187,12 @@ const EmployeePage = () => {
             sortable: false,
             width: 200,
             cellClassName: 'center-cell',
-            renderHeader: () => {
-                return (
-                    <div className='text-end'>
-                        <Button type='button'
-                            className='text-dark'
-                            style={{ backgroundColor: 'rgb(241 171 171)', borderColor: 'black' }}
-                        >
-                            Delete Employee
-                        </Button>
-                    </div>
-                );
-            },
             renderCell: (params: any) => {
                 return (
-                    <div style={{ fontSize: '30px' }} onClick={() => console.log(params)}>
+                    <div style={{ fontSize: '30px' }} onClick={() => {
+                        setselectRowData(params.row.data)
+                        setselectEditRowId(params.id)
+                    }}>
                         <BiSolidMessageSquareEdit />
                     </div>
                 )
@@ -201,26 +212,26 @@ const EmployeePage = () => {
                         <Col>
                             <Form.Control
                                 placeholder="First name"
-                                {...register("fname", {
+                                {...register("firstName", {
                                     required: "Please Enter First Name",
                                 })}
                             />
                             <ErrorMessage
                                 className="text-danger font-semibold"
                                 errors={errors}
-                                name="fname"
+                                name="firstName"
                                 as="p"
                             />
                         </Col>
                         <Col>
                             <Form.Control placeholder="Last name"
-                                {...register("lname", {
+                                {...register("lastName", {
                                     required: "Please Enter Last Name",
                                 })} />
                             <ErrorMessage
                                 className="text-danger font-semibold"
                                 errors={errors}
-                                name="lname"
+                                name="lastName"
                                 as="p"
                             />
                         </Col>
