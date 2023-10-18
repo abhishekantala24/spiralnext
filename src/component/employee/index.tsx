@@ -30,7 +30,7 @@ const EmployeePage = () => {
     const [entriesData, setEntriesData] = useState<any[]>()
     const [selectedRows, setSelectedRows] = useState<any[]>([]);
     const [selectRowData, setselectRowData] = useState<any>();
-    const [selectEditRowId, setselectEditRowId] = useState<any>();
+    const [selectEditRowId, setselectEditRowId] = useState("");
 
     const usersData = useAppSelector(authSelector).userDetails
     const dispatch = useAppDispatch()
@@ -45,11 +45,11 @@ const EmployeePage = () => {
                 // Update the existing document with the edited userData
                 await setDoc(docRef, userData);
                 toast.success("Employee Details updated successfully", toastConfig)
-                setselectEditRowId()
+                setselectEditRowId("")
                 getData();
             } catch (error) {
                 toast.error("Error updating Employee Details", toastConfig)
-                setselectEditRowId()
+                setselectEditRowId("")
                 getData();
             }
 
