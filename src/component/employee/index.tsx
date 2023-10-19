@@ -104,19 +104,20 @@ const EmployeePage = () => {
 
     const handleDeleteClick = async () => {
         const firestore = getFirestore();
+        dispatch(showLoader({ loading: true, message: 'empty' }))
+        const deletePromises = selectedRows.map((docId) => deleteDoc(doc(firestore, 'entry', docId)))
         if (selectedRows.length) {
-            for (const docId of selectedRows) {
-                try {
-                    await deleteDoc(doc(firestore, 'entry', docId));
-                    toast.success("Employee Delete Successfully", toastConfig)
-                    getData()
-                } catch (error) {
-                    getData()
-                    toast.error(`Error deleting Employee`, toastConfig);
-                }
+            try {
+                await Promise.all(deletePromises);
+                toast.success("Employees Deleted Successfully", toastConfig);
+                getData();
+            } catch (error) {
+                getData();
+                toast.error(`Error deleting Employees: ${error}`, toastConfig);
             }
         } else {
-            toast.error("Please Select Employee", toastConfig)
+            dispatch(hideLoader())
+            toast.error('Please Select Employee');
         }
     };
 
@@ -176,7 +177,6 @@ const EmployeePage = () => {
         {
             field: 'addedby',
             headerName: 'Added By',
-            description: 'This column has a value getter and is not sortable.',
             sortable: false,
             width: 200,
             valueGetter: (params: GridValueGetterParams) => params.row.data.addedby,
@@ -259,8 +259,7 @@ const EmployeePage = () => {
                                 <option value="Designer">Designer</option>
                                 <option value="Angular Developer">Angular Developer</option>
                                 <option value="Next js Developer">Next js Developer</option>
-                                {/* <option value="HR">HR</option>
-                                <option value="Office Admin">Office Admin</option> */}
+                                <option value="QA">QA</option>
                             </Form.Select>
                             <ErrorMessage
                                 className="text-danger font-semibold"
@@ -308,7 +307,7 @@ const EmployeePage = () => {
                         Delete Employee
                     </Button>
                 </div>
-                <Box sx={{ height: 500, width: '100%' }}>
+                <Box sx={{ height: 520, width: '100%' }}>
                     <DataGrid
                         rows={entriesData ? entriesData : []}
                         columns={columns}

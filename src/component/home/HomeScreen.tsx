@@ -49,7 +49,7 @@ const HomeScreen = () => {
         </div>
         <div className="col-md-4 my-5">
           <div className="p-4 border" style={{ borderRadius: '5px', backgroundColor: "rgba(136, 196, 255, 0.5)" }}>
-            <span className='d-flex'>React Js Developer</span>
+            <span className='d-flex'> </span>
             <span><b>{entriesData?.filter((item) => item.data.role === "React Js developer").length || "-"}</b></span>
           </div>
         </div>
@@ -61,8 +61,8 @@ const HomeScreen = () => {
         </div>
         <div className="col-md-4">
           <div className="p-4 border" style={{ borderRadius: '5px', backgroundColor: "rgba(136, 196, 255, 0.5)" }}>
-            <span className='d-flex'>Angular Developer</span>
-            <span><b>{entriesData?.filter((item) => item.data.role === "Angular Developer").length || "-"}</b></span>
+            <span className='d-flex'>QA</span>
+            <span><b>{entriesData?.filter((item) => item.data.role === "QA").length || "-"}</b></span>
           </div>
         </div>
         <div className="col-md-4">
